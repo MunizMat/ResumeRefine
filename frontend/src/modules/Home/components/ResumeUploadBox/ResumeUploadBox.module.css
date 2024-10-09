@@ -1,0 +1,23 @@
+.container {
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+
+    margin-top: 3rem;
+
+    max-width: 600px;
+}
+
+.button {
+    background: linear-gradient(90deg, rgb(83, 32, 178) 17%, rgb(135, 70, 165) 92%);
+    transition: all 0.6s ease;
+    
+    &[data-disabled="true"],
+    &[data-disabled="true"]:hover {
+        background: rgb(156,152,152);
+        color: white;
+    }
+
+    &:hover {
+        background: linear-gradient(90deg, rgb(80, 20, 192) 17%, rgb(118, 54, 147) 92%);
+    }
+}
