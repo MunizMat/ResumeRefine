@@ -3,6 +3,18 @@
 
     justify-content: space-between;
     align-items: center;
+    gap: 2rem;
+    
+    max-width: 1400px;
+
+    margin: 0 auto;
+    flex-direction: column-reverse;
+
+    padding: 2rem;
+
+    @media(min-width: $mantine-breakpoint-md){
+        flex-direction: row;
+    }
 
     @media(min-width: $mantine-breakpoint-sm){
         padding: 4rem;
@@ -10,16 +22,27 @@
 }
 
 .title {
-    font-size: 5rem;    
-
+    font-size: 3rem;
     color: rgb(228, 228, 228);
+    
+    @media(min-width: $mantine-breakpoint-sm){
+        font-size: 5rem;
+    }
 }
 
 .slogan {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: rgb(228, 228, 228);
+    
+    @media(min-width: $mantine-breakpoint-sm){
+        font-size: 1.5rem;
+    }
 }
 
 .lottie_player {
-    max-height: 400px;
+    max-width: 300px;
+    
+    @media(min-width: $mantine-breakpoint-sm){
+        max-width: 600px;
+    }
 }

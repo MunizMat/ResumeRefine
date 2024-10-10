@@ -1,3 +1,51 @@
 .resume_img {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+.container {
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+}
+
+.wrapper {
+ justify-content: space-between;
+ align-items: center;
+ gap: 4rem;
+
+ padding: 3rem;
+}
+
+.right_section {
+    display: none;
+
+    @media(min-width: $mantine-breakpoint-md){
+        display: flex;
+    }
+}
+
+.resume_mobile {
+    img {
+        max-width: 60%;
+    }
+    
+    @media(min-width: $mantine-breakpoint-sm){
+        img {
+            max-width: 500px;
+        }
+        
+    }
+
+    @media(min-width: $mantine-breakpoint-md){
+        display: none;
+    }
+}
+
+.resume_wrapper {
+    flex-direction: column;
+    
+    @media(min-width: $mantine-breakpoint-md){
+        flex-direction: row;
+    }
+}

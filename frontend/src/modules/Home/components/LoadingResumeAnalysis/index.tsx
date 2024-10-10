@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 //   'cc2a2fba-5c68-4076-995c-62bb81e80f21/VqL8HFLoj2',
 // ];
 
+import styles from './LoadingResumeAnalysis.module.css';
+
 export const LoadingResumeAnalysis = () => {
   const [value, setValue] = useState<number>(0);
 
@@ -22,26 +24,28 @@ export const LoadingResumeAnalysis = () => {
   }, []);
 
   return (
-    <Flex p={16} justify="center" direction="column" align="center">
-      <Text c="white" fz={30}>
-        Your resume is being analysed...
-      </Text>
+    <Flex mih="100vh" align="center" justify="center">
+      <Flex className={styles.container}>
+        <Text c="white" fz={30}>
+          Your resume is being analysed...
+        </Text>
 
-      <DotLottiePlayer
-        autoplay
-        loop
-        src={`https://lottie.host/8fa7e17e-be36-43c1-9cbc-a158f96154f0/FurgQOnu6j.json`}
-        className=""
-      />
+        <DotLottiePlayer
+          autoplay
+          loop
+          src={`https://lottie.host/8fa7e17e-be36-43c1-9cbc-a158f96154f0/FurgQOnu6j.json`}
+          className=""
+        />
 
-      <Progress
-        animated
-        value={value}
-        color="violet.9"
-        mt={60}
-        w="80%"
-        size="lg"
-      />
+        <Progress
+          animated
+          value={value}
+          color="violet.9"
+          mt={60}
+          w="80%"
+          size="lg"
+        />
+      </Flex>
     </Flex>
   );
 };
