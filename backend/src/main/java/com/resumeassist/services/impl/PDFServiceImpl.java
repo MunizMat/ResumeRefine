@@ -20,8 +20,11 @@ public class PDFServiceImpl implements PDFService {
         PDDocument document = PDDocument.load(pdfBytes);
         PDFTextStripper textStripper = new PDFTextStripper();
 
+        String text = textStripper.getText(document);
+
         document.close();
-        return textStripper.getText(document);
+
+        return text;
     }
 
     @Override
