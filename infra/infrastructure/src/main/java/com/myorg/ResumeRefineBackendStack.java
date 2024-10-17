@@ -28,11 +28,6 @@ public class ResumeRefineBackendStack extends Stack {
                 new ResumeRefineMainBucket.Props(props.getEnvironment())
         );
 
-        this.restApi = new ResumeRefineRestApi(
-                this,
-                NameUtils.generateConstructId("RestApi", props.getEnvironment()),
-                new ResumeRefineRestApi.Props(props.getEnvironment())
-        );
 
         this.getPresignedUrlLambda = new GetPresignedUrlLambda(
                 this,
@@ -43,24 +38,14 @@ public class ResumeRefineBackendStack extends Stack {
                 )
         );
 
+        this.restApi = new ResumeRefineRestApi(
+                this,
+                NameUtils.generateConstructId("RestApi", props.getEnvironment()),
+                new ResumeRefineRestApi.Props(props.getEnvironment(), this.getPresignedUrlLambda)
+        );
+
         this.mainBucket.getBucket().grantReadWrite(this.getPresignedUrlLambda.getLambda());
 
-        this.restApi.getRestApi().getRoot().addResource(
-                "presigned-url",
-                ResourceOptions.builder()
-                        .defaultCorsPreflightOptions(CorsOptions.builder()
-                                .allowMethods(List.of("*"))
-                                .allowOrigins(List.of("*"))
-                                .build()
-                        )
-                        .defaultMethodOptions(MethodOptions.builder()
-                                .operationName("GET")
-                                .build())
-                        .defaultIntegration(
-                                new LambdaIntegration(this.getPresignedUrlLambda.getLambda())
-                        )
-                        .build()
-    );
     }
 
     public static class Props {

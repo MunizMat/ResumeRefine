@@ -1,5 +1,6 @@
 package com.myorg.constructs.lambdas;
 
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.FunctionProps;
@@ -30,6 +31,7 @@ public class GetPresignedUrlLambda extends Construct {
                         .environment(environment)
                         .handler("com.lambdas.GetPresignedUrlLambdaHandler")
                         .functionName("get-presigned-url-lambda-%s".formatted(props.getEnv().toLowerCase()))
+                        .timeout(Duration.seconds(Integer.valueOf(30)))
                         .build()
         );
     }
