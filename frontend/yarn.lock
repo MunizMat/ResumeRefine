@@ -314,6 +314,19 @@
   resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-7.1.0.tgz#880620a5f602f797427652943be535cfa519780e"
   integrity sha512-FBRzrYcZ+Jdyvi/nzmHcjr3hSngNjk9kVx+U0e80YuQhn9hpWqChtC7bBGcnVamzF7VkM835FW0jR6AVbHLrlw==
 
+"@mantine/notifications@^7.13.3":
+  version "7.13.3"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-7.13.3.tgz#4791a2e9a42fe7ca325fc5398ea0cffb3bdabf65"
+  integrity sha512-G01Bf0g6zA+K6ZdBOIxhGIlpi3qITs6W5Z0fYTSQkzLcJSfECdR5KgRvNpzcx2ESTT8BfJJMsLySwh+WTzcoxw==
+  dependencies:
+    "@mantine/store" "7.13.3"
+    react-transition-group "4.4.5"
+
+"@mantine/store@7.13.3":
+  version "7.13.3"
+  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-7.13.3.tgz#802a9ded1e0445cde7ea78bab76e61c83ee393e8"
+  integrity sha512-95nAgH6APhak1OwP2W3ogdWBiWkIDhDSbQEm2G9LTJLIJxzWSm1mLe5uDWluVEPZW2XFx137McuJb58i1A+QhQ==
+
 "@next/env@13.4.4":
   version "13.4.4"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.4.4.tgz#46b620f6bef97fe67a1566bf570dbb791d40c50a"
@@ -2976,7 +2989,7 @@ react-textarea-autosize@8.5.2:
     use-composed-ref "^1.3.0"
     use-latest "^1.2.1"
 
-react-transition-group@^4.4.5:
+react-transition-group@4.4.5, react-transition-group@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
   integrity sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==

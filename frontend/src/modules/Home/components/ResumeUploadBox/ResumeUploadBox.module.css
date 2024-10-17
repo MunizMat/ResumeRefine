@@ -10,14 +10,20 @@
 .button {
     background: linear-gradient(90deg, rgb(83, 32, 178) 17%, rgb(135, 70, 165) 92%);
     transition: all 0.6s ease;
-    
+
     &[data-disabled="true"],
     &[data-disabled="true"]:hover {
-        background: rgb(156,152,152);
+        background: rgb(156, 152, 152);
         color: white;
     }
 
     &:hover {
         background: linear-gradient(90deg, rgb(80, 20, 192) 17%, rgb(118, 54, 147) 92%);
     }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

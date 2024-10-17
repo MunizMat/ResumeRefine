@@ -10,7 +10,9 @@ import '../index.css';
 import '@mantine/core/styles.css';
 import '@mantine/charts/styles.css';
 import '@mantine/dropzone/styles.css';
+import '@mantine/notifications/styles.css';
 import { ResumeProvider } from '../src/contexts/Resume';
+import { Notifications } from '@mantine/notifications';
 
 export default function App({ Component, pageProps }: any) {
   return (
@@ -23,6 +25,8 @@ export default function App({ Component, pageProps }: any) {
         />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
+
+      <Notifications />
 
       <ResumeProvider>
         <Component {...pageProps} />
