@@ -10,6 +10,7 @@
     <modules>
         <module>lambdas</module>
         <module>infrastructure</module>
+        <module>fargate-jobs</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -25,8 +26,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration> <!-- Compile java 7 compatible bytecode -->
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>
