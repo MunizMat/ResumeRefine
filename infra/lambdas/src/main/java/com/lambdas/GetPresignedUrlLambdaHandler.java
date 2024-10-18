@@ -5,11 +5,11 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lambdas.exceptions.ClientErrorException;
 import com.lambdas.exceptions.HttpException;
 import com.lambdas.exceptions.MissingEnvironmentVariableException;
+import com.lambdas.utils.HttpResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -70,40 +70,22 @@ public class GetPresignedUrlLambdaHandler implements RequestHandler<APIGatewayV2
 
             String url = presignedRequest.url().toExternalForm();
 
-            return APIGatewayV2HTTPResponse
-                    .builder()
+            return HttpResponse.create(Map.of("url", url))
                     .withStatusCode(200)
-                    .withBody(mapper.writeValueAsString(Map.of("url", url)))
                     .build();
         } catch (HttpException exception) {
           exception.printStackTrace();
 
-            return APIGatewayV2HTTPResponse.builder()
+            return HttpResponse.create(Map.of("message", exception.getMessage()))
                     .withStatusCode(exception.getStatusCode())
-                    .withBody(getJsonBody(Map.of("message", exception.getMessage())))
                     .build();
-
         } catch (Exception e) {
             e.printStackTrace();
-            String body = "";
 
-            return APIGatewayV2HTTPResponse.builder()
+            return HttpResponse.create(Map.of("message", "Internal server error"))
                     .withStatusCode(500)
-                    .withBody(getJsonBody(Map.of("message", "Internal server error")))
                     .build();
         }
 
-    }
-
-    private String getJsonBody(Object data){
-        String body = "";
-
-        try {
-            body = mapper.writeValueAsString(data);
-        } catch (JsonProcessingException ex){
-            ex.printStackTrace();
-        }
-
-        return body;
     }
 }

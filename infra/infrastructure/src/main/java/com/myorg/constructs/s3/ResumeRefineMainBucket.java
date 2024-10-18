@@ -38,6 +38,7 @@ public class ResumeRefineMainBucket extends Construct  {
                                                 .build()
                                 )
                         )
+                        .accessControl(BucketAccessControl.PUBLIC_READ_WRITE)
                         .lifecycleRules(
                                 List.of(
                                         LifecycleRule.builder()
