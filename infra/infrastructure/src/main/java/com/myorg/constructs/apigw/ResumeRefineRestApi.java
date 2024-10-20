@@ -1,6 +1,7 @@
 package com.myorg.constructs.apigw;
 
 import com.myorg.constructs.lambdas.GetPresignedUrlLambda;
+import com.myorg.constructs.lambdas.GetResumeAnalysisLambda;
 import com.myorg.utils.NameUtils;
 import software.amazon.awscdk.services.apigateway.*;
 import software.constructs.Construct;
@@ -19,7 +20,7 @@ public class ResumeRefineRestApi extends Construct {
 
         this.restApi = new RestApi(
                 this,
-                NameUtils.generateConstructId("RestApi", props.getEnv()),
+                NameUtils.generateConstructId("RestApi", props.env()),
                 RestApiProps.builder()
                         .build()
         );
@@ -35,9 +36,16 @@ public class ResumeRefineRestApi extends Construct {
                         .build()
         );
 
+        this.getRestApi().getRoot().resourceForPath(
+                "/resume/{analysisId}"
+        ).addMethod(
+                "GET",
+                new LambdaIntegration(props.getResumeAnalysisLambda().getLambda())
+        );
+
         presignedUrlResource.addMethod(
                 "GET",
-                new LambdaIntegration(props.getGetPresignedUrlLambda().getLambda())
+                new LambdaIntegration(props.getPresignedUrlLambda().getLambda())
         );
     }
 
@@ -45,21 +53,10 @@ public class ResumeRefineRestApi extends Construct {
         return restApi;
     }
 
-    public static class Props {
-        private final String env;
-        private final GetPresignedUrlLambda getPresignedUrlLambda;
 
-        public Props(String env, GetPresignedUrlLambda getPresignedUrlLambda){
-            this.getPresignedUrlLambda = getPresignedUrlLambda;
-            this.env = env;
-        }
-
-        public String getEnv() {
-            return env;
-        }
-
-        public GetPresignedUrlLambda getGetPresignedUrlLambda() {
-            return getPresignedUrlLambda;
-        }
-    }
+    public record Props(
+            String env,
+            GetPresignedUrlLambda getPresignedUrlLambda,
+            GetResumeAnalysisLambda getResumeAnalysisLambda
+    ){ }
 }

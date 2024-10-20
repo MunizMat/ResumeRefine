@@ -1,10 +1,9 @@
 package com.MunizMat.models;
 
 import com.MunizMat.ResumeFeedback;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
+@DynamoDBTable(tableName = "resume-refine-main-table-prod")
 public class ResumeAnalysis {
     private String partitionKey;
     private String sortKey;
@@ -13,6 +12,10 @@ public class ResumeAnalysis {
     private String filename;
     private long createdAt;
     private ResumeFeedback resumeAnalysis;
+
+    public ResumeAnalysis(){
+
+    }
 
     public ResumeAnalysis(
             String partitionKey,

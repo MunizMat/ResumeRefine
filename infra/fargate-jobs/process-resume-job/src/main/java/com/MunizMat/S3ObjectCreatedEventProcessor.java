@@ -72,8 +72,6 @@ public class S3ObjectCreatedEventProcessor {
 
 
             writeResumeAnalysisToDb(email, filename, analysisId, resumeFeedback);
-
-            sendEmail();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +116,7 @@ public class S3ObjectCreatedEventProcessor {
             String email,
             String filename,
             String analysisId,
-            ResumeFeedback resumeFeedback){
+            ResumeFeedback resumeFeedback) {
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(dynamoDBClient);
 
@@ -139,14 +137,6 @@ public class S3ObjectCreatedEventProcessor {
                                 Environment.TABLE_NAME
                         ))
                         .build()
-                );
-    }
-
-    private static void sendEmail(){
-        AmazonSimpleEmailServiceClient client = new AmazonSimpleEmailServiceClient();
-
-        SendEmailRequest request = new SendEmailRequest()
-
-        client.sendEmail();
+        );
     }
 }

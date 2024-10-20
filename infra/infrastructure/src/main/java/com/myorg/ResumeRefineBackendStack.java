@@ -1,7 +1,11 @@
 package com.myorg;
 
 import com.myorg.constructs.apigw.ResumeRefineRestApi;
+import com.myorg.constructs.dynamo.MainTable;
+import com.myorg.constructs.ecs.FargateCluster;
+import com.myorg.constructs.ecs.ProcessResumeService;
 import com.myorg.constructs.lambdas.GetPresignedUrlLambda;
+import com.myorg.constructs.lambdas.GetResumeAnalysisLambda;
 import com.myorg.constructs.queues.ProcessResumeQueue;
 import com.myorg.constructs.s3.ResumeRefineMainBucket;
 import com.myorg.utils.NameUtils;
@@ -23,6 +27,10 @@ public class ResumeRefineBackendStack extends Stack {
     private final ResumeRefineRestApi restApi;
     private final GetPresignedUrlLambda getPresignedUrlLambda;
     private final ProcessResumeQueue processResumeQueue;
+    private final MainTable mainTable;
+    private final ProcessResumeService processResumeService;
+    private final FargateCluster fargateCluster;
+    private final GetResumeAnalysisLambda getResumeAnalysisLambda;
 
     public ResumeRefineBackendStack(
             final Construct scope,
@@ -33,58 +41,74 @@ public class ResumeRefineBackendStack extends Stack {
 
         this.mainBucket = new ResumeRefineMainBucket(
                 this,
-                NameUtils.generateConstructId("MainBucket", props.getEnvironment()),
-                new ResumeRefineMainBucket.Props(props.getEnvironment())
+                NameUtils.generateConstructId("MainBucket", props.env()),
+                new ResumeRefineMainBucket.Props(props.env())
+        );
+
+        this.mainTable = new MainTable(
+                this,
+                NameUtils.generateConstructId("MainTable", props.env()),
+                new MainTable.Props(props.env())
         );
 
 
         this.getPresignedUrlLambda = new GetPresignedUrlLambda(
                 this,
-                NameUtils.generateConstructId("GetPresignedUrlLambda", props.getEnvironment()),
+                NameUtils.generateConstructId("GetPresignedUrlLambda", props.env()),
                 new GetPresignedUrlLambda.Props(
-                        props.getEnvironment(),
+                        props.env(),
                         this.mainBucket.getBucket().getBucketName()
                 )
         );
 
+        this.getResumeAnalysisLambda = new GetResumeAnalysisLambda(
+                this,
+                NameUtils.generateConstructId("GetResumeAnalysisLambda", props.env),
+                new GetResumeAnalysisLambda.Props(props.env, this.mainTable.getMainTable().getTableName())
+        );
+
+
         this.restApi = new ResumeRefineRestApi(
                 this,
-                NameUtils.generateConstructId("RestApi", props.getEnvironment()),
-                new ResumeRefineRestApi.Props(props.getEnvironment(), this.getPresignedUrlLambda)
+                NameUtils.generateConstructId("RestApi", props.env()),
+                new ResumeRefineRestApi.Props(props.env(), this.getPresignedUrlLambda, this.getResumeAnalysisLambda)
         );
 
         this.mainBucket.getBucket().grantReadWrite(this.getPresignedUrlLambda.getLambda());
 
         this.processResumeQueue = new ProcessResumeQueue(
                 this,
-                NameUtils.generateConstructId("ProcessResumeQueue", props.getEnvironment()),
-                new ProcessResumeQueue.Props(props.getEnvironment())
+                NameUtils.generateConstructId("ProcessResumeQueue", props.env()),
+                new ProcessResumeQueue.Props(props.env())
         );
 
-        // Attacth a policy allowing the S3 to send messages to the queue
-//        this.mainBucket.getBucket().addToResourcePolicy(
-//                new PolicyStatement(PolicyStatementProps.builder()
-//                        .principals(List.of(new ServicePrincipal("s3.amazonaws.com")))
-//                        .actions(List.of("sqs:SendMessage"))
-//                        .effect(Effect.ALLOW)
-//                        .resources(List.of(this.processResumeQueue.getQueue().getQueueArn()))
-//                        .build())
-//        );
 
         this.mainBucket.getBucket().addEventNotification(
                 EventType.OBJECT_CREATED,
                 new SqsDestination(this.processResumeQueue.getQueue())
         );
+
+        this.fargateCluster = new FargateCluster(
+                this,
+                NameUtils.generateConstructId("FargateCluster", props.env),
+                new FargateCluster.Props(props.env)
+        );
+
+        this.processResumeService = new ProcessResumeService(
+                this,
+                NameUtils.generateConstructId("ProcessResumeService", props.env()),
+                new ProcessResumeService.Props(
+                        props.env(),
+                        this.processResumeQueue,
+                        this.mainBucket.getBucket().getBucketName(),
+                        this.fargateCluster
+                )
+        );
+
+        this.mainTable.getMainTable().grantWriteData(this.processResumeService.getService().getTaskDefinition().getTaskRole());
+        this.mainBucket.getBucket().grantReadWrite(this.processResumeService.getService().getTaskDefinition().getTaskRole());
+        this.mainTable.getMainTable().grantReadData(this.getResumeAnalysisLambda.getLambda());
     }
 
-    public static class Props {
-        private final String environment;
-        public Props(String environment){
-            this.environment = environment;
-        }
-
-        public String getEnvironment() {
-            return environment;
-        }
-    }
+    public record Props(String env){ }
 }

@@ -57,7 +57,7 @@ public class GetPresignedUrlLambdaHandler implements RequestHandler<APIGatewayV2
 
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(email + "/" + objectId + ".pdf")
+                    .key(email + "/" + objectId + "/resume.pdf")
                     .metadata(Map.of("email", email, "filename", filename))
                     .build();
 

@@ -2,6 +2,7 @@ package com.myorg.constructs.ecs;
 
 import com.myorg.constructs.queues.ProcessResumeQueue;
 import com.myorg.utils.NameUtils;
+import software.amazon.awscdk.SecretValue;
 import software.amazon.awscdk.services.applicationautoscaling.ScalingInterval;
 import software.amazon.awscdk.services.ecs.AssetImageProps;
 import software.amazon.awscdk.services.ecs.ContainerImage;
@@ -9,7 +10,9 @@ import software.amazon.awscdk.services.ecs.patterns.QueueProcessingFargateServic
 import software.amazon.awscdk.services.ecs.patterns.QueueProcessingFargateServiceProps;
 import software.constructs.Construct;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProcessResumeService extends Construct {
     private final QueueProcessingFargateService service;
@@ -21,11 +24,19 @@ public class ProcessResumeService extends Construct {
     ) {
         super(scope, id);
 
+        Map<String, String> environment = new HashMap<>();
+
+        environment.put("BUCKET_NAME", props.bucketName());
+        environment.put("PROCESS_RESUME_QUEUE_URL", props.processResumeQueue().getQueue().getQueueUrl());
+        environment.put("OPENAI_API_KEY", SecretValue.secretsManager("OPENAI_API_KEY").unsafeUnwrap());
+        environment.put("AWS_JAVA_V1_DISABLE_DEPRECATION_ANNOUNCEMENT", "true");
+
         this.service = new QueueProcessingFargateService(
                 this,
-                NameUtils.generateConstructId("ProcessResumeService", props.getEnv()),
+                NameUtils.generateConstructId("ProcessResumeService", props.env()),
                 QueueProcessingFargateServiceProps.builder()
-                        .queue(props.processResumeQueue.getQueue())
+                        .cluster(props.fargateCluster().getCluster())
+                        .queue(props.processResumeQueue().getQueue())
                         .assignPublicIp(true)
                         .disableCpuBasedScaling(true)
                         .minScalingCapacity(0)
@@ -35,14 +46,15 @@ public class ProcessResumeService extends Construct {
                                 ScalingInterval.builder().lower(1).change(+1).build()
                                 )
                         )
-                        .memoryLimitMiB(512)
-                        .cpu(256)
+                        .memoryLimitMiB(1024)
+                        .cpu(512)
                         .image(
                                 ContainerImage.fromAsset(
-                                        "../fargate-jobs/ProcessResumeJob",
+                                        "../fargate-jobs/process-resume-job",
                                         AssetImageProps.builder().file("Dockerfile").build()
                                 )
                         )
+                        .environment(environment)
                         .build()
         );
     }
@@ -51,17 +63,10 @@ public class ProcessResumeService extends Construct {
         return service;
     }
 
-    public static class Props {
-        private final String env;
-        private final ProcessResumeQueue processResumeQueue;
-
-        public Props(String env, ProcessResumeQueue processResumeQueue){
-            this.env = env;
-            this.processResumeQueue = processResumeQueue;
-        }
-
-        public String getEnv() {
-            return env;
-        }
-    }
+    public record Props(
+            String env,
+            ProcessResumeQueue processResumeQueue,
+            String bucketName,
+            FargateCluster fargateCluster
+    ) { }
 }

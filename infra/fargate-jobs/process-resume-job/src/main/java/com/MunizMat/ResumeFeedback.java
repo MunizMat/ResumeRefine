@@ -1,9 +1,11 @@
 package com.MunizMat;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
 import java.util.List;
 
+@DynamoDBDocument
 public class ResumeFeedback {
 
     private List<FeedbackItem> strengths;
@@ -47,6 +49,7 @@ public class ResumeFeedback {
         this.finalAnswer = finalAnswer;
     }
 
+    @DynamoDBDocument
     public static class FeedbackItem {
         private String output;
         private String explanation;

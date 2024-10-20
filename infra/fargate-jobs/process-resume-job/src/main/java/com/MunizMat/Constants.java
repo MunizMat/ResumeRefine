@@ -32,7 +32,7 @@ public final class Constants {
                                         "additionalProperties", false
                                 )
                         ),
-                        "final_answer", Map.of("type", "string"),
+                        "finalAnswer", Map.of("type", "string"),
                         "suggestions", Map.of(
                                 "type", "array",
                                 "items", Map.of(
@@ -46,7 +46,7 @@ public final class Constants {
                                 )
                         )
                 ),
-                "required", List.of("strengths", "weaknesses", "final_answer", "suggestions"),
+                "required", List.of("strengths", "weaknesses", "finalAnswer", "suggestions"),
                 "additionalProperties", false
         );
     }
