@@ -30,7 +30,7 @@ public class GetPresignedUrlLambda extends Construct {
                         .code(Code.fromAsset("../assets/lambdas.jar"))
                         .environment(environment)
                         .handler("com.lambdas.GetPresignedUrlLambdaHandler")
-                        .functionName("get-presigned-url-lambda-%s".formatted(props.getEnv().toLowerCase()))
+                        .functionName("get-presigned-url-lambda-v2-%s".formatted(props.getEnv().toLowerCase()))
                         .timeout(Duration.seconds(Integer.valueOf(30)))
                         .build()
         );

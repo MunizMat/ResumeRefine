@@ -68,7 +68,7 @@ public class GetResumeAnalysisLambda implements RequestHandler<APIGatewayV2HTTPE
 
             GetItemResult result = dynamoDBClient.getItem(request);
 
-            Item item = ItemUtils.toItem(result.getItem());
+            var item = ItemUtils.toSimpleMapValue(result.getItem());
 
             return HttpResponse.create(item)
                     .withStatusCode(200)

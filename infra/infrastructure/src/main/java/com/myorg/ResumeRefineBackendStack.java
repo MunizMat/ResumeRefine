@@ -2,10 +2,12 @@ package com.myorg;
 
 import com.myorg.constructs.apigw.ResumeRefineRestApi;
 import com.myorg.constructs.dynamo.MainTable;
+import com.myorg.constructs.ec2.ResumeRefineVPC;
 import com.myorg.constructs.ecs.FargateCluster;
 import com.myorg.constructs.ecs.ProcessResumeService;
 import com.myorg.constructs.lambdas.GetPresignedUrlLambda;
 import com.myorg.constructs.lambdas.GetResumeAnalysisLambda;
+import com.myorg.constructs.lambdas.ResumeRefineLambdas;
 import com.myorg.constructs.queues.ProcessResumeQueue;
 import com.myorg.constructs.s3.ResumeRefineMainBucket;
 import com.myorg.utils.NameUtils;
@@ -25,12 +27,12 @@ import java.util.List;
 public class ResumeRefineBackendStack extends Stack {
     private final ResumeRefineMainBucket mainBucket;
     private final ResumeRefineRestApi restApi;
-    private final GetPresignedUrlLambda getPresignedUrlLambda;
+    private final ResumeRefineLambdas resumeRefineLambdas;
+    private final ResumeRefineVPC resumeRefineVPC;
     private final ProcessResumeQueue processResumeQueue;
     private final MainTable mainTable;
     private final ProcessResumeService processResumeService;
     private final FargateCluster fargateCluster;
-    private final GetResumeAnalysisLambda getResumeAnalysisLambda;
 
     public ResumeRefineBackendStack(
             final Construct scope,
@@ -51,30 +53,31 @@ public class ResumeRefineBackendStack extends Stack {
                 new MainTable.Props(props.env())
         );
 
-
-        this.getPresignedUrlLambda = new GetPresignedUrlLambda(
+        this.resumeRefineVPC = new ResumeRefineVPC(
                 this,
-                NameUtils.generateConstructId("GetPresignedUrlLambda", props.env()),
-                new GetPresignedUrlLambda.Props(
-                        props.env(),
-                        this.mainBucket.getBucket().getBucketName()
-                )
+                NameUtils.generateConstructId("VPC", props.env),
+                new ResumeRefineVPC.Props(props.env)
         );
 
-        this.getResumeAnalysisLambda = new GetResumeAnalysisLambda(
+
+        this.resumeRefineLambdas = new ResumeRefineLambdas(
                 this,
-                NameUtils.generateConstructId("GetResumeAnalysisLambda", props.env),
-                new GetResumeAnalysisLambda.Props(props.env, this.mainTable.getMainTable().getTableName())
+                NameUtils.generateConstructId("ResumeRefineLambdas", props.env),
+                new ResumeRefineLambdas.Props(
+                        props.env,
+                        this.mainBucket.getBucket().getBucketName(),
+                        this.mainTable.getMainTable().getTableName()
+                )
         );
 
 
         this.restApi = new ResumeRefineRestApi(
                 this,
                 NameUtils.generateConstructId("RestApi", props.env()),
-                new ResumeRefineRestApi.Props(props.env(), this.getPresignedUrlLambda, this.getResumeAnalysisLambda)
+                new ResumeRefineRestApi.Props(props.env(), this.resumeRefineLambdas.getGetPresignedUrlLambda(), this.resumeRefineLambdas.getGetResumeAnalysisLambda())
         );
 
-        this.mainBucket.getBucket().grantReadWrite(this.getPresignedUrlLambda.getLambda());
+        this.mainBucket.getBucket().grantReadWrite(this.resumeRefineLambdas.getGetPresignedUrlLambda().getLambda());
 
         this.processResumeQueue = new ProcessResumeQueue(
                 this,
@@ -91,7 +94,7 @@ public class ResumeRefineBackendStack extends Stack {
         this.fargateCluster = new FargateCluster(
                 this,
                 NameUtils.generateConstructId("FargateCluster", props.env),
-                new FargateCluster.Props(props.env)
+                new FargateCluster.Props(props.env, this.resumeRefineVPC)
         );
 
         this.processResumeService = new ProcessResumeService(
@@ -107,7 +110,7 @@ public class ResumeRefineBackendStack extends Stack {
 
         this.mainTable.getMainTable().grantWriteData(this.processResumeService.getService().getTaskDefinition().getTaskRole());
         this.mainBucket.getBucket().grantReadWrite(this.processResumeService.getService().getTaskDefinition().getTaskRole());
-        this.mainTable.getMainTable().grantReadData(this.getResumeAnalysisLambda.getLambda());
+        this.mainTable.getMainTable().grantReadData(this.resumeRefineLambdas.getGetResumeAnalysisLambda().getLambda());
     }
 
     public record Props(String env){ }

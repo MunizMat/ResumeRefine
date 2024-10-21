@@ -23,7 +23,7 @@ public class GetResumeAnalysisLambda extends Construct {
                         .code(Code.fromAsset("../assets/lambdas.jar"))
                         .environment(Map.of("TABLE_NAME", props.tableName()))
                         .handler("com.lambdas.GetResumeAnalysisLambda")
-                        .functionName("get-resume-analysis-lambda-%s".formatted(props.env().toLowerCase()))
+                        .functionName("get-resume-analysis-lambda-v2-%s".formatted(props.env().toLowerCase()))
                         .timeout(Duration.seconds(Integer.valueOf(30)))
                         .build()
         );

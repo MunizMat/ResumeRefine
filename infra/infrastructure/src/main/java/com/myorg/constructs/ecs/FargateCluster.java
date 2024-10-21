@@ -1,5 +1,6 @@
 package com.myorg.constructs.ecs;
 
+import com.myorg.constructs.ec2.ResumeRefineVPC;
 import com.myorg.utils.NameUtils;
 import software.amazon.awscdk.services.ecs.Cluster;
 import software.amazon.awscdk.services.ecs.ClusterProps;
@@ -19,6 +20,7 @@ public class FargateCluster extends Construct  {
                 this,
                 NameUtils.generateConstructId("FargateCluster", props.env),
                 ClusterProps.builder()
+                        .vpc(props.resumeRefineVPC.getVpc())
                         .clusterName("resume-refine-fargate-cluster-%s".formatted(props.env))
                         .build()
         );
@@ -28,5 +30,5 @@ public class FargateCluster extends Construct  {
         return cluster;
     }
 
-    public record Props(String env) { }
+    public record Props(String env, ResumeRefineVPC resumeRefineVPC) { }
 }
