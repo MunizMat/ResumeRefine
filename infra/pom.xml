@@ -8,7 +8,6 @@
     <version>0.1</version>
 
     <modules>
-        <module>lambdas</module>
         <module>infrastructure</module>
         <module>fargate-jobs</module>
     </modules>

@@ -1,28 +1,29 @@
 package com.myorg.constructs.lambdas;
 
 import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
-import software.amazon.awscdk.services.lambda.FunctionProps;
 import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.lambda.nodejs.NodejsFunction;
+import software.amazon.awscdk.services.lambda.nodejs.NodejsFunctionProps;
 import software.constructs.Construct;
 
 import java.util.Map;
 
 public class GetResumeAnalysisLambda extends Construct {
-    private final Function lambda;
+    private final NodejsFunction lambda;
 
     public GetResumeAnalysisLambda(final Construct scope, final String id, final GetResumeAnalysisLambda.Props props){
         super(scope, id);
 
-        this.lambda = new Function(
+        this.lambda = new NodejsFunction(
                 this,
                 "GetResumeAnalysisLambda-%s".formatted(props.env()),
-                FunctionProps.builder()
-                        .runtime(Runtime.JAVA_17)
-                        .code(Code.fromAsset("../assets/lambdas.jar"))
+                NodejsFunctionProps.builder()
+                        .runtime(Runtime.NODEJS_18_X)
+                        .entry("../lambdas/src/getResumeAnalysisLambda.ts")
+                        .depsLockFilePath("../lambdas/yarn.lock")
                         .environment(Map.of("TABLE_NAME", props.tableName()))
-                        .handler("com.lambdas.GetResumeAnalysisLambda")
+                        .handler("handler")
                         .functionName("get-resume-analysis-lambda-v2-%s".formatted(props.env().toLowerCase()))
                         .timeout(Duration.seconds(Integer.valueOf(30)))
                         .build()

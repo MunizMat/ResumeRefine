@@ -2,11 +2,17 @@ import { Flex, Image, List, Tabs, Text } from '@mantine/core';
 import { useResume } from '../../../../contexts/Resume';
 
 import styles from './ResumeAnalysis.module.css';
+import { ResumeAnalysis as IAnalysis } from '../../../../services/resume/types';
+import { FC } from 'react';
 
-export const ResumeAnalysis = () => {
-  const { resume, resumeAnalysis } = useResume();
+interface Props {
+  analysis: IAnalysis;
+}
 
-  const { final_answer, strengths, suggestions, weaknesses } = resumeAnalysis;
+export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
+  const { resume } = useResume();
+
+  const { final_answer, strengths, suggestions, weaknesses } = analysis;
 
   return (
     <Flex className={styles.container}>

@@ -5,7 +5,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
-import com.amazonaws.services.simpleemail.model.SendEmailRequest;
+import com.amazonaws.services.simpleemail.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stefanbratanov.jvm.openai.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 public class S3ObjectCreatedEventProcessor {
@@ -72,6 +73,8 @@ public class S3ObjectCreatedEventProcessor {
 
 
             writeResumeAnalysisToDb(email, filename, analysisId, resumeFeedback);
+
+            sendResumeAnalysisEmail(email, "https://resume-refine.com/analysis/%s/%s".formatted(email, analysisId));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -138,5 +141,22 @@ public class S3ObjectCreatedEventProcessor {
                         ))
                         .build()
         );
+    }
+
+    private static void sendResumeAnalysisEmail(String email, String resumeAnalysisUrl){
+        AmazonSimpleEmailServiceClient sesClient = new AmazonSimpleEmailServiceClient();
+
+        SendEmailRequest sendEmailRequest = new SendEmailRequest(
+                "noreply@resume-refine.com",
+                new Destination(List.of(email)),
+                new Message(
+                        new Content("Resume Refine Analysis"),
+                        new Body(
+                                new Content("Your resume analysis can be found at: %s".formatted(resumeAnalysisUrl))
+                        )
+                )
+        );
+
+        sesClient.sendEmail(sendEmailRequest);
     }
 }

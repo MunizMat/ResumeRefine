@@ -108,6 +108,13 @@ public class ResumeRefineBackendStack extends Stack {
                 )
         );
 
+        this.processResumeService.getService().getTaskDefinition().addToTaskRolePolicy(
+                new PolicyStatement(PolicyStatementProps.builder()
+                        .resources(List.of("*"))
+                        .actions(List.of("ses:SendEmail"))
+                        .build())
+        );
+
         this.mainTable.getMainTable().grantWriteData(this.processResumeService.getService().getTaskDefinition().getTaskRole());
         this.mainBucket.getBucket().grantReadWrite(this.processResumeService.getService().getTaskDefinition().getTaskRole());
         this.mainTable.getMainTable().grantReadData(this.resumeRefineLambdas.getGetResumeAnalysisLambda().getLambda());

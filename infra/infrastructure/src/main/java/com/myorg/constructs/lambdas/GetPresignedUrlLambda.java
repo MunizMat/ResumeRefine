@@ -5,6 +5,8 @@ import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.FunctionProps;
 import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awscdk.services.lambda.nodejs.NodejsFunction;
+import software.amazon.awscdk.services.lambda.nodejs.NodejsFunctionProps;
 import software.constructs.Construct;
 
 import java.nio.file.Path;
@@ -13,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetPresignedUrlLambda extends Construct {
-    private final Function lambda;
+    private final NodejsFunction lambda;
 
     public GetPresignedUrlLambda(final Construct scope, final String id, final Props props){
         super(scope, id);
@@ -22,16 +24,17 @@ public class GetPresignedUrlLambda extends Construct {
 
         environment.put("BUCKET_NAME", props.getMainBucketName());
 
-        this.lambda = new Function(
+        this.lambda = new NodejsFunction(
                 this,
                 "GetPresignedUrlLambda-%s".formatted(props.getEnv()),
-                FunctionProps.builder()
-                        .runtime(Runtime.JAVA_17)
-                        .code(Code.fromAsset("../assets/lambdas.jar"))
+                NodejsFunctionProps.builder()
+                        .runtime(Runtime.NODEJS_18_X)
+                        .entry("../lambdas/src/getPresignedUrlLambda.ts")
                         .environment(environment)
-                        .handler("com.lambdas.GetPresignedUrlLambdaHandler")
+                        .handler("handler")
                         .functionName("get-presigned-url-lambda-v2-%s".formatted(props.getEnv().toLowerCase()))
                         .timeout(Duration.seconds(Integer.valueOf(30)))
+                        .depsLockFilePath("../lambdas/yarn.lock")
                         .build()
         );
     }
