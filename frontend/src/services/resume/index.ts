@@ -4,7 +4,7 @@ import { api } from '../api';
 /* ------------- Types ----------- */
 import {
   GetResumeAnalysisInput,
-  ResumeAnalysis,
+  GetResumeAnalysisOutput,
   SaveResumeInput,
   SaveResumeOutput,
 } from './types';
@@ -35,9 +35,12 @@ const getResumeAnalysis = async ({
   email,
 }: GetResumeAnalysisInput) => {
   try {
-    const { data } = await api.get<ResumeAnalysis>(`/resume/${analysisId}`, {
-      params: { email },
-    });
+    const { data } = await api.get<GetResumeAnalysisOutput>(
+      `/resume/${analysisId}`,
+      {
+        params: { email },
+      }
+    );
 
     return data;
   } catch (error) {

@@ -20,10 +20,15 @@ export interface ResumeAnalysis {
   sortKey: string;
   email: string;
   analysisId: string;
+  filename: string;
   resumeAnalysis: {
     final_answer: string;
     weaknesses: ResumeAnalysisResponse[];
     strengths: ResumeAnalysisResponse[];
     suggestions: ResumeAnalysisResponse[];
   };
+}
+
+export interface GetResumeAnalysisOutput {
+  resumeAnalysis: ResumeAnalysis;
 }

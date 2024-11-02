@@ -16,7 +16,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     if (!email || !analysisId) throw new Error('Missing email or analysisId');
 
-    const resumeAnalysis = await resume.getResumeAnalysis({
+    const { resumeAnalysis } = await resume.getResumeAnalysis({
       analysisId: analysisId as string,
       email: email as string,
     });

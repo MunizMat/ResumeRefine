@@ -33,12 +33,7 @@ export const ResumeUploadBox = () => {
         filename: resume?.name || '',
       });
 
-      await axios.put(presignedUrl, resume, {
-        // headers: {
-        //   'x-amz-meta-email': email,
-        //   'x-amz-meta-filename': resume?.name,
-        // },
-      });
+      await axios.put(presignedUrl, resume);
     } catch (error) {
       notifications.show({
         title: 'Failed to upload resume',
