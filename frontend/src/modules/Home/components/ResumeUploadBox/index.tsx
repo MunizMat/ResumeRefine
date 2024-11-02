@@ -34,10 +34,10 @@ export const ResumeUploadBox = () => {
       });
 
       await axios.put(presignedUrl, resume, {
-        headers: {
-          'x-amz-meta-email': email,
-          'x-amz-meta-filename': resume?.name,
-        },
+        // headers: {
+        //   'x-amz-meta-email': email,
+        //   'x-amz-meta-filename': resume?.name,
+        // },
       });
     } catch (error) {
       notifications.show({

@@ -1,5 +1,4 @@
-import { Flex, Image, List, Tabs, Text } from '@mantine/core';
-import { useResume } from '../../../../contexts/Resume';
+import { Flex, List, Tabs, Text } from '@mantine/core';
 
 import styles from './ResumeAnalysis.module.css';
 import { ResumeAnalysis as IAnalysis } from '../../../../services/resume/types';
@@ -10,9 +9,8 @@ interface Props {
 }
 
 export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
-  const { resume } = useResume();
-
-  const { final_answer, strengths, suggestions, weaknesses } = analysis;
+  const { final_answer, strengths, suggestions, weaknesses } =
+    analysis.resumeAnalysis;
 
   return (
     <Flex className={styles.container}>
@@ -21,13 +19,13 @@ export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
           <Flex gap={24} className={styles.resume_wrapper}>
             <Flex direction="column">
               <Text fz={48}>Your Resume Analysis:</Text>
-              <Text fz={20}>{resume?.filename}</Text>
+              {/* <Text fz={20}>{resume?.filename}</Text> */}
 
               <Text>{final_answer}</Text>
             </Flex>
 
             <Flex className={styles.resume_mobile}>
-              <Image radius={8} src={resume?.url} />
+              {/* <Image radius={8} src={resume?.url} /> */}
             </Flex>
           </Flex>
 
@@ -88,7 +86,7 @@ export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
         </Flex>
 
         <Flex className={styles.right_section}>
-          <Image radius={8} height={600} width={400} src={resume?.url} />
+          {/* <Image radius={8} height={600} width={400} src={resume?.url} /> */}
         </Flex>
       </Flex>
     </Flex>

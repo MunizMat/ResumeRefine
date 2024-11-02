@@ -11,7 +11,6 @@ import '@mantine/core/styles.css';
 import '@mantine/charts/styles.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/notifications/styles.css';
-import { ResumeProvider } from '../src/contexts/Resume';
 import { Notifications } from '@mantine/notifications';
 
 export default function App({ Component, pageProps }: any) {
@@ -28,9 +27,7 @@ export default function App({ Component, pageProps }: any) {
 
       <Notifications />
 
-      <ResumeProvider>
-        <Component {...pageProps} />
-      </ResumeProvider>
+      <Component {...pageProps} />
     </MantineProvider>
   );
 }

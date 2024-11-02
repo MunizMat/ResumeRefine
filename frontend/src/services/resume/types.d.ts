@@ -16,8 +16,14 @@ export interface GetResumeAnalysisInput {
 }
 
 export interface ResumeAnalysis {
-  final_answer: string;
-  weaknesses: ResumeAnalysisResponse[];
-  strengths: ResumeAnalysisResponse[];
-  suggestions: ResumeAnalysisResponse[];
+  partitionKey: string;
+  sortKey: string;
+  email: string;
+  analysisId: string;
+  resumeAnalysis: {
+    final_answer: string;
+    weaknesses: ResumeAnalysisResponse[];
+    strengths: ResumeAnalysisResponse[];
+    suggestions: ResumeAnalysisResponse[];
+  };
 }
