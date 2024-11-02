@@ -10,10 +10,12 @@ import { useState } from 'react';
 import { getPresignedUrl } from '../../../../services/presigned-url';
 import axios from 'axios';
 import { notifications } from '@mantine/notifications';
+import { useRouter } from 'next/router';
 
 type AnalyseResumeForm = z.infer<typeof analyseResumeSchema>;
 
 export const ResumeUploadBox = () => {
+  const { push } = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
   const { getInputProps, values, onSubmit } = useForm<AnalyseResumeForm>({
@@ -34,6 +36,8 @@ export const ResumeUploadBox = () => {
       });
 
       await axios.put(presignedUrl, resume);
+
+      push('/analysis/success');
     } catch (error) {
       notifications.show({
         title: 'Failed to upload resume',
