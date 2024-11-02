@@ -5,17 +5,8 @@ import { Flex, Text, Title } from '@mantine/core';
 import styles from './Home.module.css';
 import { ResumeUploadBox } from './components/ResumeUploadBox';
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { useResume } from '../../contexts/Resume';
-import { LoadingResumeAnalysis } from './components/LoadingResumeAnalysis';
-import { ResumeAnalysis } from './components/ResumeAnalysis';
 
 export const HomeModule = () => {
-  const { loadingResumeAnalysis, resumeAnalysis } = useResume();
-
-  if (loadingResumeAnalysis) return <LoadingResumeAnalysis />;
-
-  if (resumeAnalysis.final_answer) return <ResumeAnalysis />;
-
   return (
     <Flex className={styles.container}>
       <Flex direction="column">

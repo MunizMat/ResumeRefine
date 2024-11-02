@@ -4,14 +4,12 @@ import {
   FC,
   ReactNode,
   SetStateAction,
-  useCallback,
   useContext,
   useMemo,
   useState,
 } from 'react';
 import { Resume } from '../../types/resume';
 
-import { resume as resumeServices } from '../../services/resume';
 import { ResumeAnalysis } from '../../services/resume/types';
 
 interface ResumeProviderProps {
@@ -21,8 +19,6 @@ interface ResumeProviderProps {
 interface ResumeContextData {
   resume: Resume | null;
   setResume: Dispatch<SetStateAction<Resume | null>>;
-  loadingResumeAnalysis: boolean;
-  handleAnalyseResume: () => Promise<void>;
 
   resumeAnalysis: ResumeAnalysis;
   setResumeAnalysis: Dispatch<SetStateAction<ResumeAnalysis>>;
@@ -38,44 +34,16 @@ export const ResumeProvider: FC<ResumeProviderProps> = ({ children }) => {
     suggestions: [],
     weaknesses: [],
   });
-  const [loadingResumeAnalysis, setLoadingResumeAnalysis] =
-    useState<boolean>(false);
-
-  const handleAnalyseResume = useCallback(async () => {
-    if (!resume) return;
-
-    const { resumeId } = resume;
-
-    setLoadingResumeAnalysis(true);
-
-    try {
-      const { final_answer, strengths, weaknesses, suggestions } =
-        await resumeServices.getResumeAnalysis({ resumeId });
-
-      setResumeAnalysis({ final_answer, strengths, weaknesses, suggestions });
-    } catch (error) {
-      console.error(error);
-    }
-
-    setLoadingResumeAnalysis(false);
-  }, [resume]);
 
   const value = useMemo(
     () => ({
       resume,
       setResume,
-      loadingResumeAnalysis,
-      handleAnalyseResume,
+
       resumeAnalysis,
       setResumeAnalysis,
     }),
-    [
-      resume,
-      setResume,
-      loadingResumeAnalysis,
-      resumeAnalysis,
-      setResumeAnalysis,
-    ]
+    [resume, setResume, resumeAnalysis, setResumeAnalysis]
   );
   return (
     <ResumeContext.Provider value={value}>{children}</ResumeContext.Provider>
