@@ -1,6 +1,6 @@
 # ResumeRefine
 
-ResumeRefine is an online tool that provides resume / CV analysis. The tool allows you to upload a PDF file and receive feedback and improvement suggestions for the uploaded PDF containing the resume. The project is accessible at https://resume-refine.com
+An online tool that provides detailed resume analysis. The tool allows you to upload a PDF file and receive feedback and improvement suggestions for the uploaded PDF containing the resume. The project is a work in progress but a preview is available at https://resume-refine.com
 
 ## Technologies
 - Java
