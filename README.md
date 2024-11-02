@@ -4,7 +4,7 @@ An online tool that provides detailed resume analysis. The tool allows you to up
 
 ## Technologies
 - Java
-- SpringBoot
-- AWS
+- AWS (Lambda, ECS, API Gateway, DynamoDB, SQS)
 - Docker
 - Next.js
+- Typescript
