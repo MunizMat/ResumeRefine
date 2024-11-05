@@ -20,8 +20,8 @@ public class GetResumeAnalysisLambda extends Construct {
                 "GetResumeAnalysisLambda-%s".formatted(props.env()),
                 NodejsFunctionProps.builder()
                         .runtime(Runtime.NODEJS_18_X)
-                        .entry("../lambdas/src/getResumeAnalysisLambda.ts")
-                        .depsLockFilePath("../lambdas/yarn.lock")
+                        .entry("../lambdas/nodejs/src/getResumeAnalysisLambda.ts")
+                        .depsLockFilePath("../lambdas/nodejs/yarn.lock")
                         .environment(Map.of("TABLE_NAME", props.tableName()))
                         .handler("handler")
                         .functionName("get-resume-analysis-lambda-v2-%s".formatted(props.env().toLowerCase()))
