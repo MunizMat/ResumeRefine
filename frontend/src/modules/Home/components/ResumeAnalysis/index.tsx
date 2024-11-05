@@ -11,15 +11,11 @@ interface Props {
 
 export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
   const { filename, resumeAnalysis, email, analysisId, createdAt } = analysis;
-  const { final_answer, strengths, suggestions, weaknesses } = resumeAnalysis;
+  const { finalAnswer, strengths, suggestions, weaknesses } = resumeAnalysis;
 
   const resumeImg = `https://resume-refine-main-bucket-prod.s3.us-east-1.amazonaws.com/${encodeURIComponent(
     email
   )}/${analysisId}/resume.jpg`;
-
-  const formattedDate = ['MMM/dd/yyyy', 'hh:mm']
-    .map((dateFormat) => format(new Date(createdAt), dateFormat))
-    .join(' ');
 
   return (
     <Flex className={styles.container}>
@@ -27,15 +23,19 @@ export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
         <Flex direction="column" gap={28} maw={700}>
           <Flex gap={24} className={styles.resume_wrapper}>
             <Flex direction="column">
-              <Text fz={48}>Your Resume Analysis:</Text>
+              <Text fz={48}>Your Resume:</Text>
 
-              <Text fz={18}>File: {filename}</Text>
+              <Text fz={16}>File: {filename}</Text>
 
-              <Text fz={18}>Email: {email}</Text>
+              <Text fz={16}>Email: {email}</Text>
 
-              <Text fz={18}>Date: {formattedDate}</Text>
+              <Text fz={16}>
+                Date: {format(new Date(createdAt), 'dd MMMM yyyy, HH:mm')}
+              </Text>
 
-              <Text>{final_answer}</Text>
+              <Text mt={20} fz={18}>
+                {finalAnswer}
+              </Text>
             </Flex>
 
             <Flex className={styles.resume_mobile}>

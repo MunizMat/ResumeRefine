@@ -23,7 +23,7 @@ export interface ResumeAnalysis {
   filename: string;
   createdAt: number;
   resumeAnalysis: {
-    final_answer: string;
+    finalAnswer: string;
     weaknesses: ResumeAnalysisResponse[];
     strengths: ResumeAnalysisResponse[];
     suggestions: ResumeAnalysisResponse[];
