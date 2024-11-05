@@ -5,9 +5,14 @@ import com.myorg.utils.NameUtils;
 import software.amazon.awscdk.SecretValue;
 import software.amazon.awscdk.services.applicationautoscaling.ScalingInterval;
 import software.amazon.awscdk.services.ecs.AssetImageProps;
+import software.amazon.awscdk.services.ecs.AwsLogDriverProps;
 import software.amazon.awscdk.services.ecs.ContainerImage;
+import software.amazon.awscdk.services.ecs.LogDriver;
 import software.amazon.awscdk.services.ecs.patterns.QueueProcessingFargateService;
 import software.amazon.awscdk.services.ecs.patterns.QueueProcessingFargateServiceProps;
+import software.amazon.awscdk.services.logs.LogGroup;
+import software.amazon.awscdk.services.logs.LogGroupProps;
+import software.amazon.awscdk.services.logs.RetentionDays;
 import software.constructs.Construct;
 
 import java.util.HashMap;
@@ -41,6 +46,12 @@ public class ProcessResumeService extends Construct {
                         .disableCpuBasedScaling(true)
                         .minScalingCapacity(0)
                         .maxScalingCapacity(1)
+                        .logDriver(LogDriver.awsLogs(
+                                AwsLogDriverProps.builder()
+                                        .logRetention(RetentionDays.THREE_DAYS)
+                                        .streamPrefix("resumerefine")
+                                        .build()
+                        ))
                         .scalingSteps(List.of(
                                 ScalingInterval.builder().upper(0).change(-1).build(),
                                 ScalingInterval.builder().lower(1).change(+1).build()

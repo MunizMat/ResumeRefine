@@ -4,7 +4,7 @@ import { ApiError } from './utils/ApiError';
 import { v4 as uuidV4 } from 'uuid';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { s3Client } from './clients/s3';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { ObjectCannedACL, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export const handler: APIGatewayProxyHandler = async (event): Promise<APIGatewayProxyResult> => {
   try {
@@ -32,7 +32,8 @@ export const handler: APIGatewayProxyHandler = async (event): Promise<APIGateway
       Metadata: {
         email,
         filename
-      }
+      },
+      ACL: ObjectCannedACL.public_read_write
     })
 
     const url = await getSignedUrl(s3Client, command, { expiresIn: 60 * 10 });
