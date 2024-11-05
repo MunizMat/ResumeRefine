@@ -15,7 +15,7 @@ import { Notifications } from '@mantine/notifications';
 
 export default function App({ Component, pageProps }: any) {
   return (
-    <MantineProvider forceColorScheme="dark" theme={theme}>
+    <MantineProvider theme={theme}>
       <Head>
         <title>ResumeRefine</title>
         <meta

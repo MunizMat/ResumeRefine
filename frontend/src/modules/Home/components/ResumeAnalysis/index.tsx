@@ -3,18 +3,23 @@ import { Flex, Image, List, Tabs, Text } from '@mantine/core';
 import styles from './ResumeAnalysis.module.css';
 import { ResumeAnalysis as IAnalysis } from '../../../../services/resume/types';
 import { FC } from 'react';
+import { format } from 'date-fns';
 
 interface Props {
   analysis: IAnalysis;
 }
 
 export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
-  const { filename, resumeAnalysis, email, analysisId } = analysis;
+  const { filename, resumeAnalysis, email, analysisId, createdAt } = analysis;
   const { final_answer, strengths, suggestions, weaknesses } = resumeAnalysis;
 
   const resumeImg = `https://resume-refine-main-bucket-prod.s3.us-east-1.amazonaws.com/${encodeURIComponent(
     email
   )}/${analysisId}/resume.jpg`;
+
+  const formattedDate = ['MMM/dd/yyyy', 'hh:mm']
+    .map((dateFormat) => format(new Date(createdAt), dateFormat))
+    .join(' ');
 
   return (
     <Flex className={styles.container}>
@@ -23,7 +28,12 @@ export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
           <Flex gap={24} className={styles.resume_wrapper}>
             <Flex direction="column">
               <Text fz={48}>Your Resume Analysis:</Text>
-              <Text fz={20}>{filename}</Text>
+
+              <Text fz={18}>File: {filename}</Text>
+
+              <Text fz={18}>Email: {email}</Text>
+
+              <Text fz={18}>Date: {formattedDate}</Text>
 
               <Text>{final_answer}</Text>
             </Flex>
@@ -90,7 +100,13 @@ export const ResumeAnalysis: FC<Props> = ({ analysis }) => {
         </Flex>
 
         <Flex className={styles.right_section}>
-          <Image radius={8} height={600} width={400} src={resumeImg} />
+          <Image
+            className={styles.resume_img}
+            radius={8}
+            height={600}
+            width={400}
+            src={resumeImg}
+          />
         </Flex>
       </Flex>
     </Flex>

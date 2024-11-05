@@ -1,0 +1,10 @@
+.input_label {
+  color: #2e2e2e;
+}
+
+.input_wrapper {
+  &:focus-within {
+    outline: 1.5px solid #58CC5F;
+    border-color: transparent;
+  }
+}
