@@ -29,12 +29,12 @@ public class GetPresignedUrlLambda extends Construct {
                 "GetPresignedUrlLambda-%s".formatted(props.getEnv()),
                 NodejsFunctionProps.builder()
                         .runtime(Runtime.NODEJS_18_X)
-                        .entry("../lambdas/src/getPresignedUrlLambda.ts")
+                        .entry("../lambdas/nodejs/src/getPresignedUrlLambda.ts")
                         .environment(environment)
                         .handler("handler")
                         .functionName("get-presigned-url-lambda-v2-%s".formatted(props.getEnv().toLowerCase()))
                         .timeout(Duration.seconds(Integer.valueOf(30)))
-                        .depsLockFilePath("../lambdas/yarn.lock")
+                        .depsLockFilePath("../lambdas/nodejs/yarn.lock")
                         .build()
         );
     }

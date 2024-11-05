@@ -1,0 +1,57 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "**/tsconfig.json",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "ignorePatterns": [
+    "cdk.out/*"
+  ],
+  "rules": {
+    "no-undef": "error",
+    "no-new": "off", // In order to follow cdk practices
+    "import/prefer-default-export": "off", // Named export is easier to refactor automatically
+    "import/order": [
+      1,
+      {
+        "groups": [
+          [
+            "external",
+            "builtin"
+          ],
+          [
+            "internal"
+          ],
+          [
+            "index",
+            "sibling",
+            "parent",
+            "object"
+          ]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 package com.myorg.constructs.queues;
 
 import com.myorg.utils.NameUtils;
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.services.sqs.Queue;
 import software.amazon.awscdk.services.sqs.QueueProps;
 import software.constructs.Construct;
@@ -20,6 +21,7 @@ public class ProcessResumeQueue extends Construct {
                 NameUtils.generateConstructId("ProcessResumeQueue", props.getEnv()),
                 QueueProps.builder()
                         .queueName("resume-refine-process-resume-queue-%s".formatted(props.getEnv()))
+                        .visibilityTimeout(Duration.minutes(5))
                         .build()
         );
     }

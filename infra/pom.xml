@@ -9,7 +9,7 @@
 
     <modules>
         <module>infrastructure</module>
-        <module>fargate-jobs</module>
+        <module>lambdas/java</module>
     </modules>
 
     <packaging>pom</packaging>
