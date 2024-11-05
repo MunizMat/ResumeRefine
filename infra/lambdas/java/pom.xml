@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.MunizMat</groupId>
-        <artifactId>fargate-jobs</artifactId>
+        <artifactId>infra</artifactId>
         <version>0.1</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>process-resume-job</artifactId>
+    <artifactId>java</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -54,30 +55,4 @@
             <version>1.12.774</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version> <!-- Use the latest version -->
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.MunizMat.Main</mainClass> <!-- Replace with your main class -->
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
