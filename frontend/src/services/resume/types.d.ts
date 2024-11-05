@@ -21,6 +21,7 @@ export interface ResumeAnalysis {
   email: string;
   analysisId: string;
   filename: string;
+  createdAt: number;
   resumeAnalysis: {
     final_answer: string;
     weaknesses: ResumeAnalysisResponse[];
