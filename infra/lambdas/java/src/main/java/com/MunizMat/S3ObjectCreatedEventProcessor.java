@@ -1,6 +1,7 @@
 package com.MunizMat;
 
 import com.MunizMat.models.ResumeAnalysis;
+import com.MunizMat.utils.Constants;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;

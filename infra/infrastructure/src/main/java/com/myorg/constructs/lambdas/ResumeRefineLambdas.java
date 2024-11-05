@@ -1,11 +1,13 @@
 package com.myorg.constructs.lambdas;
 
+import com.myorg.constructs.queues.ProcessResumeQueue;
 import com.myorg.utils.NameUtils;
 import software.constructs.Construct;
 
 public class ResumeRefineLambdas extends Construct {
     private final GetResumeAnalysisLambda getResumeAnalysisLambda;
     private final GetPresignedUrlLambda getPresignedUrlLambda;
+    private final ProcessResumeSQSHandlerLambda processResumeSQSHandlerLambda;
 
     public ResumeRefineLambdas(
             final Construct scope,
@@ -25,6 +27,16 @@ public class ResumeRefineLambdas extends Construct {
             NameUtils.generateConstructId("GetResumeAnalysisLambda", props.env),
                 new GetResumeAnalysisLambda.Props(props.env, props.mainTableName)
         );
+
+        this.processResumeSQSHandlerLambda = new ProcessResumeSQSHandlerLambda(
+                this,
+                NameUtils.generateConstructId("ProcessResumeSQSHandlerLambda", props.env),
+                new ProcessResumeSQSHandlerLambda.Props(
+                        props.mainBucketName,
+                        props.processResumeQueue,
+                        props.env
+                )
+        );
     }
 
     public GetPresignedUrlLambda getGetPresignedUrlLambda() {
@@ -35,5 +47,9 @@ public class ResumeRefineLambdas extends Construct {
         return getResumeAnalysisLambda;
     }
 
-    public record Props(String env, String mainBucketName, String mainTableName){ }
+    public ProcessResumeSQSHandlerLambda getProcessResumeSQSHandlerLambda() {
+        return processResumeSQSHandlerLambda;
+    }
+
+    public record Props(String env, String mainBucketName, String mainTableName, ProcessResumeQueue processResumeQueue){ }
 }

@@ -1,12 +1,13 @@
 package com.MunizMat;
 
+import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.DeleteMessageRequest;
-import com.amazonaws.services.sqs.model.Message;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MessageProcessor {
-    public static void processMessage(Message message) {
+public class SQSMessageProcessor {
+    public static void processMessage(SQSEvent.SQSMessage message) {
        try {
            String body = message.getBody();
 
