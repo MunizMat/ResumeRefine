@@ -56,7 +56,8 @@ public final class Constants {
             skills in building the resume. Also, identify at least three areas of improvement (weaknesses)
             where the candidate can enhance their resume to increase their chances of being hired.
             After providing your analysis, include actionable suggestions for improvement. In your answers
-            make sure to refer to the candidate in second person.
+            make sure to refer to the candidate in second person. Also ensure that the explanations and the final answer has at least 500 characters
+            at maximum 700 characters
             """;
 }
 
