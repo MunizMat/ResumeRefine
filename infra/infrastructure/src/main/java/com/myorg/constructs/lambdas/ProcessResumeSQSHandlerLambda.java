@@ -38,7 +38,8 @@ public class ProcessResumeSQSHandlerLambda extends Construct {
                         .timeout(Duration.minutes(5))
                         .functionName("process-resume-queue-handler-%s".formatted(props.env))
                         .runtime(Runtime.JAVA_17)
-                        .code(Code.fromAsset("../assets/lambdas.jar"))
+                        .memorySize(Integer.valueOf(1024))
+                        .code(Code.fromAsset("../lambdas/assets/lambdas.jar"))
                         .handler("com.MunizMat.ProcessResumeQueueHandlerLambda")
                         .build()
         );

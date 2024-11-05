@@ -33,7 +33,6 @@ export const handler: APIGatewayProxyHandler = async (event): Promise<APIGateway
         email,
         filename
       },
-      ACL: ObjectCannedACL.public_read_write
     })
 
     const url = await getSignedUrl(s3Client, command, { expiresIn: 60 * 10 });

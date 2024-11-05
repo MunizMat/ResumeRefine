@@ -7,10 +7,16 @@ import com.myorg.constructs.queues.ProcessResumeQueue;
 import com.myorg.constructs.s3.ResumeRefineMainBucket;
 import com.myorg.utils.NameUtils;
 import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.services.iam.Effect;
+import software.amazon.awscdk.services.iam.PolicyStatement;
+import software.amazon.awscdk.services.iam.PolicyStatementProps;
 import software.amazon.awscdk.services.lambda.eventsources.SqsEventSource;
 import software.amazon.awscdk.services.s3.EventType;
+import software.amazon.awscdk.services.s3.NotificationKeyFilter;
 import software.amazon.awscdk.services.s3.notifications.SqsDestination;
 import software.constructs.Construct;
+
+import java.util.List;
 
 public class ResumeRefineBackendStack extends Stack {
     private final ResumeRefineMainBucket mainBucket;
@@ -68,7 +74,10 @@ public class ResumeRefineBackendStack extends Stack {
 
         this.mainBucket.getBucket().addEventNotification(
                 EventType.OBJECT_CREATED,
-                new SqsDestination(this.processResumeQueue.getQueue())
+                new SqsDestination(this.processResumeQueue.getQueue()),
+                NotificationKeyFilter.builder()
+                        .suffix(".pdf")
+                        .build()
         );
 
 
@@ -78,6 +87,15 @@ public class ResumeRefineBackendStack extends Stack {
         this.resumeRefineLambdas.getProcessResumeSQSHandlerLambda().getLambda().addEventSource(
                 new SqsEventSource(this.processResumeQueue.getQueue())
         );
+
+        this.resumeRefineLambdas.getProcessResumeSQSHandlerLambda().getLambda()
+                .addToRolePolicy(new PolicyStatement(
+                        PolicyStatementProps.builder()
+                                .actions(List.of("ses:SendEmail"))
+                                .effect(Effect.ALLOW)
+                                .resources(List.of("*"))
+                                .build()
+                ));
 
         this.mainBucket.getBucket().grantReadWrite(this.resumeRefineLambdas.getProcessResumeSQSHandlerLambda().getLambda());
         this.mainBucket.getBucket().grantPutAcl(this.resumeRefineLambdas.getProcessResumeSQSHandlerLambda().getLambda());
