@@ -1,4 +1,14 @@
 #__next {
     min-height: 100vh;
-    background: linear-gradient(90deg, rgba(34,34,59,1) 17%, rgba(74,78,105,1) 92%);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+    color: #2e2e2e !important;
 }

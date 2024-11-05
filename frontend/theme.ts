@@ -1,5 +1,17 @@
-import { createTheme } from '@mantine/core';
+import { createTheme, Input, InputWrapper } from '@mantine/core';
+import styles from './src/styles/input.module.css';
 
 export const theme = createTheme({
-  /* Put your mantine theme override here */
+  components: {
+    InputWrapper: InputWrapper.extend({
+      classNames: {
+        label: styles.input_label,
+      },
+    }),
+    Input: Input.extend({
+      classNames: {
+        input: styles.input_wrapper,
+      },
+    }),
+  },
 });

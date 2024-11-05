@@ -50,15 +50,15 @@ export const ResumeUploadBox = () => {
   };
 
   return (
-    <Paper className={styles.container} shadow="xl" p={16}>
+    <Paper className={styles.container} p={24}>
       <form className={styles.form} onSubmit={onSubmit(handleSubmit)}>
-        <Text fz={18} fw={400}>
+        <Text fz={18} fw={400} c="#2e2e2e">
           Upload your resume and obtain a detailed analysis with meaningful
           insights that will help attract recruiters!
         </Text>
 
         <TextInput
-          variant="unstyled"
+          variant="filled"
           label="Email"
           placeholder="Email"
           {...getInputProps('email')}
@@ -67,7 +67,7 @@ export const ResumeUploadBox = () => {
         <FileInput
           label="Resume"
           placeholder="Upload resume"
-          variant="unstyled"
+          variant="filled"
           accept=".pdf"
           {...getInputProps('resume')}
         />
