@@ -41,7 +41,7 @@ export const ResumeUploadBox = () => {
     } catch (error) {
       notifications.show({
         title: 'Failed to upload resume',
-        message: 'We failed to upload your resume. Please try again',
+        message: (error as Error).message,
         color: 'red',
       });
     }

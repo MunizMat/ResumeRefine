@@ -22,17 +22,18 @@ public class GetPresignedUrlLambda extends Construct {
 
         Map<String, String> environment = new HashMap<>();
 
-        environment.put("BUCKET_NAME", props.getMainBucketName());
+        environment.put("BUCKET_NAME", props.mainBucketName());
+        environment.put("TABLE_NAME", props.mainTableName);
 
         this.lambda = new NodejsFunction(
                 this,
-                "GetPresignedUrlLambda-%s".formatted(props.getEnv()),
+                "GetPresignedUrlLambda-%s".formatted(props.env()),
                 NodejsFunctionProps.builder()
                         .runtime(Runtime.NODEJS_18_X)
                         .entry("../lambdas/nodejs/src/getPresignedUrlLambda.ts")
                         .environment(environment)
                         .handler("handler")
-                        .functionName("get-presigned-url-lambda-v2-%s".formatted(props.getEnv().toLowerCase()))
+                        .functionName("get-presigned-url-lambda-v2-%s".formatted(props.env().toLowerCase()))
                         .timeout(Duration.seconds(Integer.valueOf(30)))
                         .depsLockFilePath("../lambdas/nodejs/yarn.lock")
                         .build()
@@ -43,21 +44,6 @@ public class GetPresignedUrlLambda extends Construct {
         return lambda;
     }
 
-    public static class Props {
-        private final String env;
-        private final String mainBucketName;
-
-        public Props(String env, String mainBucketName){
-            this.env = env;
-            this.mainBucketName = mainBucketName;
-        }
-
-        public String getEnv() {
-            return env;
-        }
-
-        public String getMainBucketName() {
-            return mainBucketName;
-        }
+    public record Props(String env, String mainBucketName, String mainTableName) {
     }
 }

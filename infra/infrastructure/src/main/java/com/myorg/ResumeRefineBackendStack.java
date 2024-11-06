@@ -83,6 +83,9 @@ public class ResumeRefineBackendStack extends Stack {
 
         this.mainTable.getMainTable().grantReadData(this.resumeRefineLambdas.getGetResumeAnalysisLambda().getLambda());
         this.mainTable.getMainTable().grantWriteData(this.resumeRefineLambdas.getProcessResumeSQSHandlerLambda().getLambda());
+        this.mainTable.getMainTable().grantReadData(
+                this.resumeRefineLambdas.getGetPresignedUrlLambda().getLambda()
+        );
 
         this.resumeRefineLambdas.getProcessResumeSQSHandlerLambda().getLambda().addEventSource(
                 new SqsEventSource(this.processResumeQueue.getQueue())
