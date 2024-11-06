@@ -18,15 +18,15 @@ export const handler: APIGatewayProxyHandler = async (event): Promise<APIGateway
 
     const input: QueryCommandInput = {
       TableName: TABLE_NAME,
-      IndexName: 'sortKey-partitionKey-index',
-      KeyConditionExpression: '#partitionKey = :partitionKey and begins_with(#sortKey, :sortKey)',
+      IndexName: 'sortKey-partitionKey-gsi',
+      KeyConditionExpression: '#sortKey = :sortKey and begins_with(#partitionKey, :partitionKey)',
       ExpressionAttributeNames: {
         '#partitionKey': 'partitionKey',
         '#sortKey': 'sortKey'
       },
       ExpressionAttributeValues: marshall({
-        ':partitionKey': `ANALYSIS_ID#${analysisId}`,
-        ':sortKey': 'USER_IP#'
+        ':sortKey': `ANALYSIS_ID#${analysisId}`,
+        ':partitionKey': 'USER_IP#'
       })
     }
 

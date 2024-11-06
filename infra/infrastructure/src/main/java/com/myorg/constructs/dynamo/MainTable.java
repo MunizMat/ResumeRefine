@@ -35,10 +35,10 @@ public class MainTable extends Construct {
 
         this.mainTable.addGlobalSecondaryIndex(
                 GlobalSecondaryIndexProps.builder()
-                        .indexName("sortKey-partitionKey-index")
+                        .indexName("sortKey-partitionKey-gsi")
                         .partitionKey(Attribute.builder()
                                 .type(AttributeType.STRING)
-                                .name("soryKey")
+                                .name("sortKey")
                                 .build())
                         .sortKey(Attribute.builder()
                                 .type(AttributeType.STRING)

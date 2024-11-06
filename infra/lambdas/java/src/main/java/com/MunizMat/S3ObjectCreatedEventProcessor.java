@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
 import com.amazonaws.services.simpleemail.model.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.stefanbratanov.jvm.openai.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -71,7 +72,14 @@ public class S3ObjectCreatedEventProcessor {
 
             String output = getChatGptResumeAnalysis(parsedPdfText);
 
+            System.out.printf("Chat GPT Resume Analysis: %s", output);
+
             ObjectMapper mapper =  new ObjectMapper();
+
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+
             ResumeFeedback resumeFeedback = mapper.readValue(output, ResumeFeedback.class);
 
 
