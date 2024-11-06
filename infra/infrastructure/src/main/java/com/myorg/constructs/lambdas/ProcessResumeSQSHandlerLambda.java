@@ -35,7 +35,7 @@ public class ProcessResumeSQSHandlerLambda extends Construct {
                 NameUtils.generateConstructId("ProcessResumeSQSHandlerLambda", props.env),
                 FunctionProps.builder()
                         .environment(environment)
-                        .timeout(Duration.minutes(5))
+                        .timeout(Duration.minutes(1))
                         .functionName("process-resume-queue-handler-%s".formatted(props.env))
                         .runtime(Runtime.JAVA_17)
                         .memorySize(Integer.valueOf(1024))
