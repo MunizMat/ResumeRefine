@@ -142,6 +142,9 @@ public class S3ObjectCreatedEventProcessor {
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(dynamoDBClient);
 
+        // Set TTL to 5 days
+        long timeToLive = new DateTime().plusDays(5).getMillis() / 1000;
+
         ResumeAnalysis resumeAnalysis = new ResumeAnalysis(
                 "USER_IP#%s".formatted(ipAddress),
                 "ANALYSIS_ID#%s".formatted(analysisId),
@@ -150,7 +153,8 @@ public class S3ObjectCreatedEventProcessor {
                 filename,
                 DateTime.now().getMillis(),
                 resumeFeedback,
-                ipAddress
+                ipAddress,
+                timeToLive
         );
 
         dynamoDBMapper.save(
@@ -172,7 +176,7 @@ public class S3ObjectCreatedEventProcessor {
                 new Message(
                         new Content("Resume Refine Analysis"),
                         new Body(
-                                new Content("Your resume analysis can be found at: %s".formatted(resumeAnalysisUrl))
+                                new Content("Your resume analysis can be found at: %s. This link will expire after 5 days".formatted(resumeAnalysisUrl))
                         )
                 )
         );
