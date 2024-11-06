@@ -77,7 +77,7 @@ public class S3ObjectCreatedEventProcessor {
 
             writeResumeAnalysisToDb(email, filename, analysisId, ipAddress ,resumeFeedback);
 
-            sendResumeAnalysisEmail(email, "https://resume-refine.com/analysis/%s/%s".formatted(email, analysisId));
+            sendResumeAnalysisEmail(email, "https://resume-refine.com/analysis/%s".formatted(analysisId));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
