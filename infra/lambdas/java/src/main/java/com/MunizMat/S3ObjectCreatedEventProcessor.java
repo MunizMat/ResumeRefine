@@ -40,8 +40,6 @@ public class S3ObjectCreatedEventProcessor {
             String analysisId = createdObjectKey.split("/")[1];
             String ipAddress = record.getRequestParameters().getSourceIPAddress();
 
-            System.out.println("Created object key " + createdObjectKey);
-
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(Environment.BUCKET_NAME)
                     .key(createdObjectKey)
@@ -60,6 +58,14 @@ public class S3ObjectCreatedEventProcessor {
             if(email.isBlank())
                 throw new RuntimeException("Email is missing from metadata");
 
+            System.out.printf("""
+                    Client data: {
+                        "email": "%s",
+                        "filename": "%s",
+                        "ipAddress": "%s",
+                        "analysisId": "%s"
+                    }
+                    %n""", email, filename, ipAddress, analysisId);
 
             PDDocument document = PDDocument.load(responseInputStream);
             PDFTextStripper textStripper = new PDFTextStripper();
