@@ -2,10 +2,7 @@ package com.myorg.constructs.dynamo;
 
 import com.myorg.utils.NameUtils;
 
-import software.amazon.awscdk.services.dynamodb.Attribute;
-import software.amazon.awscdk.services.dynamodb.AttributeType;
-import software.amazon.awscdk.services.dynamodb.Table;
-import software.amazon.awscdk.services.dynamodb.TableProps;
+import software.amazon.awscdk.services.dynamodb.*;
 import software.constructs.Construct;
 
 public class MainTable extends Construct {
@@ -34,6 +31,20 @@ public class MainTable extends Construct {
                                 .build())
                         .build()
 
+        );
+
+        this.mainTable.addGlobalSecondaryIndex(
+                GlobalSecondaryIndexProps.builder()
+                        .indexName("sortKey-partitionKey-gsi")
+                        .partitionKey(Attribute.builder()
+                                .type(AttributeType.STRING)
+                                .name("sortKey")
+                                .build())
+                        .sortKey(Attribute.builder()
+                                .type(AttributeType.STRING)
+                                .name("partitionKey")
+                                .build())
+                        .build()
         );
     }
 

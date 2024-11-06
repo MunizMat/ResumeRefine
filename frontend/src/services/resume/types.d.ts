@@ -12,7 +12,6 @@ export interface SaveResumeOutput {
 
 export interface GetResumeAnalysisInput {
   analysisId: string;
-  email: string;
 }
 
 export interface ResumeAnalysis {

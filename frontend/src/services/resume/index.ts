@@ -30,16 +30,10 @@ const saveResume = async ({ resume }: SaveResumeInput) => {
   }
 };
 
-const getResumeAnalysis = async ({
-  analysisId,
-  email,
-}: GetResumeAnalysisInput) => {
+const getResumeAnalysis = async ({ analysisId }: GetResumeAnalysisInput) => {
   try {
     const { data } = await api.get<GetResumeAnalysisOutput>(
-      `/resume/${analysisId}`,
-      {
-        params: { email },
-      }
+      `/resume/${analysisId}`
     );
 
     return data;

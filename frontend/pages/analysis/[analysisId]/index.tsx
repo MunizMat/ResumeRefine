@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { ResumeAnalysis } from '../../../../src/modules/Home/components/ResumeAnalysis';
-import { resume } from '../../../../src/services/resume';
+import { ResumeAnalysis } from '../../../src/modules/Home/components/ResumeAnalysis';
+import { resume } from '../../../src/services/resume';
 
 export default function Page({
   resumeAnalysis,
@@ -12,13 +12,12 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   try {
     if (!ctx.params) throw new Error('Params missing');
 
-    const { email, analysisId } = ctx.params;
+    const { analysisId } = ctx.params;
 
-    if (!email || !analysisId) throw new Error('Missing email or analysisId');
+    if (!analysisId) throw new Error('Missing email or analysisId');
 
     const { resumeAnalysis } = await resume.getResumeAnalysis({
       analysisId: analysisId as string,
-      email: email as string,
     });
 
     return {

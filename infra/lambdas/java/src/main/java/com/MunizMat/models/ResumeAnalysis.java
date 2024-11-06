@@ -12,6 +12,7 @@ public class ResumeAnalysis {
     private String filename;
     private long createdAt;
     private ResumeFeedback resumeAnalysis;
+    private String ipAddress;
 
     public ResumeAnalysis(){
 
@@ -24,7 +25,8 @@ public class ResumeAnalysis {
             String analysisId,
             String filename,
             long createdAt,
-            ResumeFeedback resumeAnalysis
+            ResumeFeedback resumeAnalysis,
+            String ipAddress
     ) {
         this.analysisId = analysisId;
         this.sortKey = sortKey;
@@ -33,6 +35,7 @@ public class ResumeAnalysis {
         this.partitionKey = partitionKey;
         this.filename = filename;
         this.createdAt = createdAt;
+        this.ipAddress = ipAddress;
     }
 
     @DynamoDBHashKey
@@ -83,5 +86,12 @@ public class ResumeAnalysis {
     }
     public void setResumeAnalysis(ResumeFeedback resumeAnalysis) {
         this.resumeAnalysis = resumeAnalysis;
+    }
+
+    @DynamoDBAttribute
+    public String getIpAddress() { return ipAddress; }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 }

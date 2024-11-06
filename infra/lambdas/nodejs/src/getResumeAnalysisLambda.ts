@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
 import { ApiError } from "./utils/ApiError";
 import { dynamoDbClient } from "./clients/dynamoDb";
-import { GetItemCommand, GetItemCommandInput } from "@aws-sdk/client-dynamodb";
+import { QueryCommand, QueryCommandInput } from "@aws-sdk/client-dynamodb";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { apiResponse } from "./utils/apiResponse";
 
@@ -10,27 +10,33 @@ export const handler: APIGatewayProxyHandler = async (event): Promise<APIGateway
     const { TABLE_NAME } = process.env;
     if (!TABLE_NAME) throw new Error('TABLE_NAME is not defined');
 
-    if (!event.queryStringParameters) throw new ApiError(400, 'Missing required query parameters')
     if (!event.pathParameters) throw new ApiError(400, 'Missing required path parameters')
 
-    const { email } = event.queryStringParameters;
     const { analysisId } = event.pathParameters;
 
-    if (!analysisId || !email) throw new ApiError(400, 'Missing required parameters')
+    if (!analysisId) throw new ApiError(400, 'Missing required parameters')
 
-    const input: GetItemCommandInput = {
+    const input: QueryCommandInput = {
       TableName: TABLE_NAME,
-      Key: marshall({
-        partitionKey: `USER#${email}`,
-        sortKey: `ANALYSIS_ID#${analysisId}`
+      IndexName: 'sortKey-partitionKey-gsi',
+      KeyConditionExpression: '#sortKey = :sortKey and begins_with(#partitionKey, :partitionKey)',
+      ExpressionAttributeNames: {
+        '#partitionKey': 'partitionKey',
+        '#sortKey': 'sortKey'
+      },
+      ExpressionAttributeValues: marshall({
+        ':sortKey': `ANALYSIS_ID#${analysisId}`,
+        ':partitionKey': 'USER_IP#'
       })
     }
 
-    const { Item } = await dynamoDbClient.send(new GetItemCommand(input));
+    const { Items = [] } = await dynamoDbClient.send(new QueryCommand(input));
 
-    if (!Item) throw new ApiError(404, 'Analysis not found');
+    const item = Items[0]
 
-    return apiResponse(200, { resumeAnalysis: unmarshall(Item) })
+    if (!item) throw new ApiError(404, 'Analysis not found');
+
+    return apiResponse(200, { resumeAnalysis: unmarshall(item) })
   } catch (error) {
     console.error(error);
 
