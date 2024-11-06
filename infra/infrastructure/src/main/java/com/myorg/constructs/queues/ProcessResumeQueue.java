@@ -21,7 +21,7 @@ public class ProcessResumeQueue extends Construct {
                 NameUtils.generateConstructId("ProcessResumeQueue", props.getEnv()),
                 QueueProps.builder()
                         .queueName("resume-refine-process-resume-queue-%s".formatted(props.getEnv()))
-                        .visibilityTimeout(Duration.minutes(5))
+                        .visibilityTimeout(Duration.minutes(1))
                         .build()
         );
     }
