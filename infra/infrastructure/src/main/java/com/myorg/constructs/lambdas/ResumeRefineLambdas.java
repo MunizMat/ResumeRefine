@@ -19,7 +19,7 @@ public class ResumeRefineLambdas extends Construct {
         this.getPresignedUrlLambda = new GetPresignedUrlLambda(
                 this,
                 NameUtils.generateConstructId("GetPresignedUrlLambda", props.env),
-                new GetPresignedUrlLambda.Props(props.env, props.mainBucketName)
+                new GetPresignedUrlLambda.Props(props.env, props.mainBucketName, props.mainTableName)
         );
 
         this.getResumeAnalysisLambda = new GetResumeAnalysisLambda(
@@ -51,5 +51,8 @@ public class ResumeRefineLambdas extends Construct {
         return processResumeSQSHandlerLambda;
     }
 
-    public record Props(String env, String mainBucketName, String mainTableName, ProcessResumeQueue processResumeQueue){ }
+    public record Props(String env,
+                        String mainBucketName,
+                        String mainTableName,
+                        ProcessResumeQueue processResumeQueue){ }
 }
