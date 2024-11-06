@@ -37,6 +37,7 @@ public class S3ObjectCreatedEventProcessor {
             String encodedCreatedObjectKey = record.getS3().getObject().getKey();
             String createdObjectKey = URLDecoder.decode(encodedCreatedObjectKey, StandardCharsets.UTF_8);
             String analysisId = createdObjectKey.split("/")[1];
+            String ipAddress = record.getRequestParameters().getSourceIPAddress();
 
             System.out.println("Created object key " + createdObjectKey);
 
@@ -74,7 +75,7 @@ public class S3ObjectCreatedEventProcessor {
             ResumeFeedback resumeFeedback = mapper.readValue(output, ResumeFeedback.class);
 
 
-            writeResumeAnalysisToDb(email, filename, analysisId, resumeFeedback);
+            writeResumeAnalysisToDb(email, filename, analysisId, ipAddress ,resumeFeedback);
 
             sendResumeAnalysisEmail(email, "https://resume-refine.com/analysis/%s/%s".formatted(email, analysisId));
         } catch (Exception e) {
@@ -122,18 +123,20 @@ public class S3ObjectCreatedEventProcessor {
             String email,
             String filename,
             String analysisId,
+            String ipAddress,
             ResumeFeedback resumeFeedback) {
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(dynamoDBClient);
 
         ResumeAnalysis resumeAnalysis = new ResumeAnalysis(
-                "USER#%s".formatted(email),
+                "USER_IP#%s".formatted(ipAddress),
                 "ANALYSIS_ID#%s".formatted(analysisId),
                 email,
                 analysisId,
                 filename,
                 DateTime.now().getMillis(),
-                resumeFeedback
+                resumeFeedback,
+                ipAddress
         );
 
         dynamoDBMapper.save(
