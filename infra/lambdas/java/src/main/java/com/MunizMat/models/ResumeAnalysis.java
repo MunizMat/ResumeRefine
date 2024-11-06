@@ -13,6 +13,7 @@ public class ResumeAnalysis {
     private long createdAt;
     private ResumeFeedback resumeAnalysis;
     private String ipAddress;
+    private long timeToLive;
 
     public ResumeAnalysis(){
 
@@ -26,7 +27,8 @@ public class ResumeAnalysis {
             String filename,
             long createdAt,
             ResumeFeedback resumeAnalysis,
-            String ipAddress
+            String ipAddress,
+            long timeToLive
     ) {
         this.analysisId = analysisId;
         this.sortKey = sortKey;
@@ -36,6 +38,7 @@ public class ResumeAnalysis {
         this.filename = filename;
         this.createdAt = createdAt;
         this.ipAddress = ipAddress;
+        this.timeToLive = timeToLive;
     }
 
     @DynamoDBHashKey
@@ -52,6 +55,13 @@ public class ResumeAnalysis {
     }
     public void setSortKey(String sortKey) {
         this.sortKey = sortKey;
+    }
+
+    @DynamoDBAttribute
+    public long getTimeToLive(){ return timeToLive; }
+
+    public void setTimeToLive(long timeToLive) {
+        this.timeToLive = timeToLive;
     }
 
     @DynamoDBAttribute
