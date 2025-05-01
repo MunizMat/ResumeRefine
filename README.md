@@ -75,4 +75,4 @@ This project demonstrates the practical application of serverless computing, eve
 7. Deploy the CDK project
     ```sh
     cdk deploy
-    ``
+    ```
