@@ -52,27 +52,11 @@ This project demonstrates the practical application of serverless computing, eve
     ```sh
     git clone https://github.com/MunizMat/ResumeRefine.git
     ```
-2. Navigate to the NodeJS lambdas directory, inside the infra folder
+2. Navigate to the project
     ```sh
-    cd ResumeRefine/infra/lambdas/nodejs
+    cd ResumeRefine
     ```
-3. Install the dependencies
+3. Run the [installation script](https://github.com/MunizMat/ResumeRefine/blob/main/install.sh) to install required dependencies and deploy the CDK stack
     ```sh
-    yarn install
-    ```
-4. Navigate back to the infra folder
-    ```sh
-    cd ../..
-    ```
-5. Build the maven project
-    ```sh
-    mvn clean package
-    ```
-6. Navigate to the infrastructure folder
-    ```sh
-    cd infrastructure
-    ```
-7. Deploy the CDK project
-    ```sh
-    cdk deploy
+    ./install.sh
     ```
