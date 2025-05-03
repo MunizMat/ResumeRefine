@@ -1,4 +1,4 @@
-[English](#english) | [Português](#português)
+[English](#english) | [Português](#portugues)
 
 <a name="english"></a>
 
