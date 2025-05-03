@@ -1,4 +1,4 @@
-- # ResumeRefine
+# ResumeRefine
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -15,6 +15,7 @@
 *   [Getting Started](#getting-started)
     *   [Prerequisites](#prerequisites)
     *   [Installation](#installation)
+    *   [Usage](#usage)
 
 ---
 
@@ -45,6 +46,7 @@ This project demonstrates the practical application of serverless computing, eve
 *   Yarn
 *   Java
 *   Maven
+*   AWS Account
 
 ### Installation
 
@@ -59,4 +61,16 @@ This project demonstrates the practical application of serverless computing, eve
 3. Run the [installation script](https://github.com/MunizMat/ResumeRefine/blob/main/install.sh) to install required dependencies and deploy the CDK stack
     ```sh
     ./install.sh
+    ```
+
+### Usage
+ResumeRefine is publically available at [resume-refine.com](https://resume-refine.com), but if you prefer running it locally, you can use the following steps:
+1. Check in the [AWS Console](https://aws.amazon.com/console/) what is the URL of your API Gateway created in the CDK deployment.
+2. In the frontend directory, update your .env file with your API URL
+    ```sh
+    NEXT_PUBLIC_API_KEY=https://<api_id>.execute-api.<aws_region>.amazonaws.com/<api_stage>
+    ```
+3. Run the frontend application:
+    ```sh
+    yarn dev
     ```

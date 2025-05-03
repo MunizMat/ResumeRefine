@@ -12,6 +12,9 @@ mvn clean package
 # Navigate to the frontend directory
 cd ../frontend
 
+# Create .env file
+echo "NEXT_PUBLIC_API_URL=" > .env
+
 # Install frontend dependencies
 yarn install
 
