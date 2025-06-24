@@ -1,6 +1,7 @@
 /* ----------- External ----------- */
 import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 /* ----------- Theme ----------- */
 import { theme } from '../theme';
@@ -26,6 +27,8 @@ export default function App({ Component, pageProps }: any) {
       </Head>
 
       <Notifications />
+
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ''} />
 
       <Component {...pageProps} />
     </MantineProvider>
