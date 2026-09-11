@@ -29,7 +29,7 @@ public class GetPresignedUrlLambda extends Construct {
                 this,
                 "GetPresignedUrlLambda-%s".formatted(props.env()),
                 NodejsFunctionProps.builder()
-                        .runtime(Runtime.NODEJS_18_X)
+                        .runtime(Runtime.NODEJS_20_X)
                         .entry("../lambdas/nodejs/src/getPresignedUrlLambda.ts")
                         .environment(environment)
                         .handler("handler")

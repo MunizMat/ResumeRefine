@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SQSBatchResponse;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProcessResumeQueueHandlerLambda implements RequestHandler<SQSEvent, SQSBatchResponse> {
@@ -22,7 +23,8 @@ public class ProcessResumeQueueHandlerLambda implements RequestHandler<SQSEvent,
 
             System.out.println(body);
 
-            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectMapper objectMapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
             ProcessResumeQueueMessage queueMessage = objectMapper.readValue(body, ProcessResumeQueueMessage.class);
 
