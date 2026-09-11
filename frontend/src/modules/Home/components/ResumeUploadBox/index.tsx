@@ -30,14 +30,14 @@ export const ResumeUploadBox = () => {
     setLoading(true);
 
     try {
-      const { url: presignedUrl } = await getPresignedUrl({
+      const { url: presignedUrl, analysisId } = await getPresignedUrl({
         email,
         filename: resume?.name || '',
       });
 
       await axios.put(presignedUrl, resume);
 
-      push('/analysis/success');
+      push(`/analysis/${analysisId}/loading`);
     } catch (error) {
       notifications.show({
         title: 'Failed to upload resume',

@@ -1,3 +1,6 @@
+/* ------------- External ----------- */
+import { isAxiosError } from 'axios';
+
 /* ------------- Api Instance ----------- */
 import { api } from '../api';
 
@@ -44,7 +47,27 @@ const getResumeAnalysis = async ({ analysisId }: GetResumeAnalysisInput) => {
   }
 };
 
+/**
+ * Lightweight readiness check used by the loading page while it polls.
+ * The analysis endpoint returns 404 until the resume has been processed,
+ * so a 404 simply means "not ready yet" rather than a hard error.
+ */
+const getResumeAnalysisStatus = async ({
+  analysisId,
+}: GetResumeAnalysisInput): Promise<'READY' | 'PENDING'> => {
+  try {
+    await api.get<GetResumeAnalysisOutput>(`/resume/${analysisId}`);
+
+    return 'READY';
+  } catch (error) {
+    if (isAxiosError(error) && error.response?.status === 404) return 'PENDING';
+
+    throw error;
+  }
+};
+
 export const resume = {
   saveResume,
   getResumeAnalysis,
+  getResumeAnalysisStatus,
 };

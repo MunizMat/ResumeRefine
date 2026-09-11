@@ -54,7 +54,7 @@ export const handler: APIGatewayProxyHandler = async (event): Promise<APIGateway
 
     const url = await getSignedUrl(s3Client, command, { expiresIn: 60 * 10 });
 
-    return apiResponse(200, { url })
+    return apiResponse(200, { url, analysisId: objectId })
   } catch (error) {
     console.error(error);
 

@@ -5,4 +5,5 @@ export interface GetPresignedUrlInput {
 
 export interface GetPresignedUrlOutput {
   url: string;
+  analysisId: string;
 }

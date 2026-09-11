@@ -1,8 +1,191 @@
-.container {
-    flex-direction: column;
+.page {
+    min-height: 100vh;
+    width: 100%;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    padding: 1.5rem;
+}
 
-    height: 100%;
+.card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 460px;
+}
+
+/* --------------- Animated orb --------------- */
+.orb {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 1rem;
+}
+
+.orb_ring,
+.orb_core {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.orb_ring {
+    inset: 0;
+    border: 3px solid rgba(88, 204, 95, 0.35);
+    animation: orb-pulse 2s ease-out infinite;
+}
+
+.orb_ring:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.orb_core {
+    inset: 28px;
+    background: #58cc5f;
+    box-shadow: 0 0 24px rgba(88, 204, 95, 0.6);
+    animation: orb-breathe 1.6s ease-in-out infinite;
+}
+
+.orb[data-ready] .orb_core {
+    inset: 8px;
+    animation: none;
+    transition: inset 0.4s ease;
+}
+
+.orb[data-ready] .orb_ring {
+    animation-play-state: paused;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+@keyframes orb-pulse {
+    0% {
+        transform: scale(0.75);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+@keyframes orb-breathe {
+    0%,
+    100% {
+        transform: scale(0.9);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+/* --------------- Copy --------------- */
+.title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #2e2e2e;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #6b6b6b !important;
+    min-height: 2.5em;
+    animation: fade-in 0.5s ease;
+}
+
+/* --------------- Step checklist --------------- */
+.steps {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    text-align: left;
+    transition: background 0.3s ease, opacity 0.3s ease;
+    opacity: 0.45;
+}
+
+.step[data-state='active'] {
+    opacity: 1;
+    background: rgba(88, 204, 95, 0.1);
+}
+
+.step[data-state='done'] {
+    opacity: 1;
+}
+
+.step_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: #58cc5f;
+}
+
+.step_dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #c4c4c4;
+}
+
+.step[data-state='active'] .step_dot {
+    border-color: #58cc5f;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+}
+
+.step_label {
+    font-size: 0.98rem;
+    color: #2e2e2e;
+}
+
+.step[data-state='done'] .step_label {
+    color: #6b6b6b !important;
+}
+
+/* --------------- Slow-analysis notice --------------- */
+.slow {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #f4f4f4;
+    animation: fade-in 0.4s ease;
+}
+
+.slow_text {
+    font-size: 0.9rem;
+    color: #6b6b6b !important;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
